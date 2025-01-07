@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goal Setter</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f8f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 700px;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: #4caf50;
+      margin: 0;
+    }
+
+    header img {
+      height: 40px;
+      margin-left: 10px;
+    }
+
+    .notification {
+      padding: 15px;
+      background-color: #ffeb3b;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      color: #555;
+      display: none; /* Hidden by default */
+      font-weight: bold;
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 10px 15px;
+      border-radius: 8px;
+      background-color: #e8f5e9;
+    }
+
+    input, button {
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    input {
+      background-color: #f9f9f9;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    li.completed {
+      text-decoration: line-through;
+      color: #888;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .action-btn {
+      padding: 6px 10px;
+      font-size: 1.1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .action-btn.complete {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .action-btn.complete:hover {
+      background-color: #45a049;
+    }
+
+    .action-btn.delete {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .action-btn.delete:hover {
+      background-color: #d32f2f;
+    }
+
+    .date, .deadline {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .overdue {
+      color: #f44336;
+      font-weight: bold;
+    }
+
+    .completed-goals-section {
+      margin-top: 30px;
+    }
+
+    .completed-goals-section h4 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .back-btn {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-align: center;
+      margin-top: 20px;
+      display: block;
+      width: 100%;
+    }
+
+    .back-btn:hover {
+      background-color: #45a049;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+        gap: 20px;
+      }
+
+      header h1 {
+        font-size: 1.5rem;
+      }
+
+      input, button {
+        font-size: 0.9rem;
+      }
+
+      .action-btn {
+        font-size: 0.9rem;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Goal Setter</h1>
+    </header>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Goal Input Form -->
+    <form id="goal-form">
+      <input type="text" id="goal-input" placeholder="Enter your goal" required>
+      <label for="goal-deadline-date">Set Deadline Date:</label>
+      <input type="date" id="goal-deadline-date" required>
+      <label for="goal-deadline-time">Set Deadline Time:</label>
+      <input type="time" id="goal-deadline-time" required>
+      <button type="submit" class="add-btn">Add Goal</button>
+    </form>
+
+    <!-- Current Goals Section -->
+    <section>
+      <h4>Current Goals</h4>
+      <ul id="goal-list"></ul>
+    </section>
+
+    <!-- Completed Goals History Section -->
+    <section class="completed-goals-section">
+      <h4>Completed Goals</h4>
+      <ul id="goal-history"></ul>
+    </section>
+
+    <!-- Back Button -->
+    <button class="back-btn" onclick="goBack()">Back</button>
+  </div>
+
+  <!-- Audio for Alarm -->
+  <audio id="alarm-sound" src="loud_alarm_sound.mp3" preload="auto"></audio>
+
+  <script>
+    const goalForm = document.getElementById("goal-form");
+    const goalInput = document.getElementById("goal-input");
+    const goalDeadlineDate = document.getElementById("goal-deadline-date");
+    const goalDeadlineTime = document.getElementById("goal-deadline-time");
+    const goalList = document.getElementById("goal-list");
+    const goalHistory = document.getElementById("goal-history");
+    const notification = document.getElementById("notification");
+    const alarmSound = document.getElementById("alarm-sound");
+
+    goalForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const goalText = goalInput.value.trim();
+      const deadlineDate = goalDeadlineDate.value;
+      const deadlineTime = goalDeadlineTime.value;
+
+      if (goalText === "" || deadlineDate === "" || deadlineTime === "") return;
+
+      const fullDeadline = `${deadlineDate}T${deadlineTime}`;
+      const li = createGoalElement(goalText, fullDeadline);
+      goalList.appendChild(li);
+
+      goalForm.reset();
+    });
+
+    function createGoalElement(text, deadline) {
+      const li = document.createElement("li");
+
+      const span = document.createElement("span");
+      span.textContent = text;
+
+      const deadlineText = document.createElement("div");
+      const formattedDeadline = new Date(deadline).toLocaleString();
+      deadlineText.textContent = `Deadline: ${formattedDeadline}`;
+      deadlineText.classList.add("deadline");
+
+      const actions = document.createElement("div");
+      actions.classList.add("actions");
+
+      const completeButton = document.createElement("button");
+      completeButton.textContent = "✔";
+      completeButton.classList.add("action-btn", "complete");
+      completeButton.addEventListener("click", () => moveToHistory(li, text, formattedDeadline));
+
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "✖";
+      deleteButton.classList.add("action-btn", "delete");
+      deleteButton.addEventListener("click", () => li.remove());
+
+      actions.appendChild(completeButton);
+      actions.appendChild(deleteButton);
+
+      li.appendChild(span);
+      li.appendChild(deadlineText);
+      li.appendChild(actions);
+
+      li.dataset.deadline = deadline; // Save deadline for notifications
+      return li;
+    }
+
+    function moveToHistory(item, text, deadline) {
+      const completedLi = document.createElement("li");
+
+      const span = document.createElement("span");
+      span.textContent = text;
+
+      const deadlineText = document.createElement("div");
+      deadlineText.textContent = `Deadline: ${deadline}`;
+
+      const completedTime = new Date().toLocaleString();
+      const completedText = document.createElement("div");
+      completedText.textContent = `Completed: ${completedTime}`;
+
+      completedLi.appendChild(span);
+      completedLi.appendChild(deadlineText);
+      completedLi.appendChild(completedText);
+
+      goalHistory.appendChild(completedLi);
+      item.remove();
+    }
+
+    function playAlarm() {
+      if (!alarmSound.paused) {
+        alarmSound.pause();
+        alarmSound.currentTime = 0; // Reset the sound
+      }
+      alarmSound.play(); // Plays the alarm sound
+      notification.style.backgroundColor = "#f44336"; // Red for urgency
+      notification.textContent = "⚠️ Deadline is nearing! Please complete your goal soon!";
+      notification.style.display = "block";
+    }
+
+    setInterval(() => {
+      const now = new Date();
+      [...goalList.children].forEach((li) => {
+        const deadline = new Date(li.dataset.deadline);
+        const timeDiff = deadline - now;
+
+        if (timeDiff > 0 && timeDiff <= 24 * 60 * 60 * 1000) {
+          playAlarm();
+        } else {
+          notification.style.display = "none";
+        }
+      });
+    }, 60000); // Check every minute
+
+    // Back button functionality
+    function goBack() {
+      window.history.back(); // Go back to the previous page
+    }
+  </script>
+</body>
+</html>

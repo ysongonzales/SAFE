@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAFE BUSINESS PLANNER</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 50px;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .hero {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .hero h1 {
+            font-size: 3rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+        .hero .buttons {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .hero button {
+            flex: 1 1 auto;
+            padding: 1rem 2rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .hero button:hover {
+            background-color: #45a049;
+        }
+        @media (max-width: 768px) {
+            .hero button {
+                font-size: 1rem;
+                padding: 0.8rem 1rem;
+                width: 100%; /* Make buttons take full width on smaller screens */
+            }
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .feature {
+            flex: 1 1 calc(33.333% - 1rem);
+            background-color: white;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .feature img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .feature h3 {
+            margin: 1rem 0 0.5rem;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+        @media (max-width: 768px) {
+            .features {
+                flex-direction: column;
+            }
+            .feature {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>SAFE Business Planner Website</h1>
+</header>
+
+<div class="container">
+    <section class="hero">
+        <h1>Plan, Organize, and Achieve Your Goals</h1>
+        <p>Your ultimate tool for managing tasks, schedules, and financials efficiently.</p>
+        <div class="buttons">
+           <a href="BSavingsTracker.html"><button>Business</button></a>
+           <a href="PSavingsTracker.html"><button>Personal</button></a>
+           <a href="goalsetter.html"><button>Goal Setter</button></a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature">
+            <img src="HEIST-APP/task.jpeg" alt="Task Management">
+            <h3>Task Management</h3>
+            <p>Stay on top of your tasks with our intuitive task manager.</p>
+        </div>
+        <div class="feature">
+            <img src="HEIST-APP/planner.jpeg" alt="Schedule Planner">
+            <h3>Schedule Planner</h3>
+            <p>Plan your day, week, or month with ease.</p>
+        </div>
+        <div class="feature">
+            <img src="HEIST-APP/Emerson_Gonzales_Financial_Tracker_5c353ff5-8e34-457e-9705-2fb916c048a9.png" alt="Financial Tracker">
+            <h3>Financial Tracker</h3>
+            <p>Track your expenses and budget for better financial control.</p>
+        </div>
+    </section>
+</div>
+
+<footer>
+    <p>&copy; 2024 Business Planner App. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
